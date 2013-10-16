@@ -7,8 +7,13 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
-
-	private WiFiDirectActivity activity;
+	
+	private MainActivity activity;
+	
+	public MyBroadcastReceiver (MainActivity activity){
+		super();
+		this.activity = activity;
+	}
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
@@ -31,12 +36,16 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
             // Connection state changed!  We should probably do something about
             // that.
-
+        
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+        	
+        	//This is all UI related code, we won't use it.
+        	/*
             DeviceListFragment fragment = (DeviceListFragment) activity.getFragmentManager()
                     .findFragmentById(R.id.frag_list);
             fragment.updateThisDevice((WifiP2pDevice) intent.getParcelableExtra(
                     WifiP2pManager.EXTRA_WIFI_P2P_DEVICE));
+            */
 
         }
     }
