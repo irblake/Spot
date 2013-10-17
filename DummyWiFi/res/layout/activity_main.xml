@@ -8,9 +8,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
+        
+    
+    <Button
+        android:id="@+id/atn_direct_enable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:icon="@drawable/ic_action_on_off"
+        android:showAsAction="ifRoom|withText"
+        android:text="@string/enable_p2p_button"/>
+
+    <Button
+        android:id="@+id/atn_direct_discover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/atn_direct_enable"
+        android:layout_marginTop="27dp"
+        android:icon="@drawable/ic_action_discover"
+        android:showAsAction="ifRoom|withText"
+        android:text="@string/discover_peers_button" />
 
 </RelativeLayout>
