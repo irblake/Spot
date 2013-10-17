@@ -1,35 +1,19 @@
 package com.example.dummywifi;
 
-
-
-
-import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.Toast;
 import android.content.BroadcastReceiver;
 
 public class MainActivity extends Activity {
 
-	
-	private Button p2pbutt;
-	private Button discoverbutt;
 	//We need an intent filter to catch only the intents we care about
 	private final IntentFilter intentFilter = new IntentFilter();
-	
 	
 	//We need a boolean to determine if the devices WiFiP2p is enabled
 	private boolean isWifiP2pEnabled = false;
@@ -54,8 +38,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
-        discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
         /*We care about 4 intents:
         When the WiFi status changes, when the list of available peers changes,
         when the state of the WiFi connectivity has changed, and when the state
@@ -79,50 +61,9 @@ public class MainActivity extends Activity {
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
         
-        p2pbutt.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            	if (mManager != null && mChannel != null) {
-
-                    // Since this is the system wireless settings activity, it's
-                    // not going to send us a result. We will be notified by
-                    // WiFiDeviceBroadcastReceiver instead.
-
-                    startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-                } else {
-                    System.out.println("channel or manager is null");
-                } 
-            }
-        });
-        discoverbutt.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            	if (!isWifiP2pEnabled) {
-                    Toast.makeText(MainActivity.this, R.string.p2p_off_warning,
-                            Toast.LENGTH_SHORT).show();
-                }
-                mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
-
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(MainActivity.this, "Discovery Initiated",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure(int reasonCode) {
-                        Toast.makeText(MainActivity.this, "Discovery Failed : " + reasonCode,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-        
     }
 
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -151,22 +92,16 @@ public class MainActivity extends Activity {
     	
     }
     
-
-    
-    public void connect(WifiP2pConfig config) {
-        mManager.connect(mChannel, config, new ActionListener() {
-
-            @Override
-            public void onSuccess() {
-                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-            }
-
-            @Override
-            public void onFailure(int reason) {
-                Toast.makeText(MainActivity.this, "Connect failed. Retry.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+    //This function handles when any option item is selected
+    //The tutorial makes us start this at a really stupid time
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    	/*
+    	switch(item.getItemId()){
+    		case R.id.atn_direct_discover
+    	}
+    	*/
+    	return true;
     }
     
 }
