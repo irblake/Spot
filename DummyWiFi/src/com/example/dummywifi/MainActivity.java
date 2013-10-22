@@ -45,14 +45,16 @@ public class MainActivity extends Activity {
 	
 	//We need a setter function to set the value of the boolean isWifiP2pEnabled
 	//Do this when the user's peer-to-peer wifi gets enabled from disabled or disabled from enabled.
-	void setIsWifiP2pEnabled(boolean ass){
-		this.isWifiP2pEnabled = ass;
+	void setIsWifiP2pEnabled(boolean newVal){
+		this.isWifiP2pEnabled = newVal;
 	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        
         
         p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
         discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
@@ -88,11 +90,10 @@ public class MainActivity extends Activity {
                     // Since this is the system wireless settings activity, it's
                     // not going to send us a result. We will be notified by
                     // WiFiDeviceBroadcastReceiver instead.
-
-                    startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            		startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
                 } else {
                     System.out.println("channel or manager is null");
-                } 
+                }
             }
         });
         discoverbutt.setOnClickListener(new OnClickListener() {
@@ -140,7 +141,9 @@ public class MainActivity extends Activity {
     	//Since this is an overwrite of Activities onPause() function, we call that as well
     	super.onPause();
     	//This is a call to unregister a previously registered BroadcastRecceiver object
-    	unregisterReceiver(mReceiver);
+    	if (mReceiver != null){
+    		unregisterReceiver(mReceiver);
+    	}
     }
     
     @Override
