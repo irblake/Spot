@@ -1,6 +1,7 @@
 /**
  * 
  */
+/*
 package test;
 
 import static org.junit.Assert.*;
@@ -12,11 +13,13 @@ import org.junit.Test;
  * @author Jeff
  *
  */
+/*
 public class TestHarness {
 
 	/**
 	 * @throws java.lang.Exception
 	 */
+/*
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -32,3 +35,4 @@ public class TestHarness {
 	}
 
 }
+*/

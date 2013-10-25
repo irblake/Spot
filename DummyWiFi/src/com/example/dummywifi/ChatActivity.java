@@ -1,4 +1,5 @@
-package com.example.spotchatview;
+package com.example.dummywifi;
+
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,14 +10,14 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.inputmethod.EditorInfo;
 
-public class MainActivity extends Activity {
-
+public class ChatActivity extends Activity {
+	
 	String username = "username";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_chat);
 		final EditText editText = (EditText) findViewById(R.id.send);
         editText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
@@ -42,5 +43,6 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
 
 }
