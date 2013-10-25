@@ -29,4 +29,15 @@
         android:showAsAction="ifRoom|withText"
         android:text="@string/discover_peers_button" />
 
+    <Button
+        android:id="@+id/atn_front_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/atn_direct_discover"
+        android:layout_marginTop="43dp"
+        android:icon="@drawable/ic_action_discover"
+        android:showAsAction="ifRoom|withText"
+        android:text="@string/ianBtn" />
+    
 </RelativeLayout>

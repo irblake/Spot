@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 	
 	private Button p2pbutt;
 	private Button discoverbutt;
+	private Button frontButton;
 	//We need an intent filter to catch only the intents we care about
 	private final IntentFilter intentFilter = new IntentFilter();
 	
@@ -58,6 +59,8 @@ public class MainActivity extends Activity {
         
         p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
         discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
+        frontButton = (Button) findViewById(R.id.atn_front_page);
+        
         /*We care about 4 intents:
         When the WiFi status changes, when the list of available peers changes,
         when the state of the WiFi connectivity has changed, and when the state
@@ -119,6 +122,15 @@ public class MainActivity extends Activity {
                     }
                 });
             }
+        });
+        
+        frontButton.setOnClickListener(new OnClickListener() {
+        	
+        	public void onClick(View v){
+        		Intent intent = new Intent(MainActivity.this,FrontActivity.class);
+        	
+        		startActivity(intent);
+        	}
         });
         
     }
