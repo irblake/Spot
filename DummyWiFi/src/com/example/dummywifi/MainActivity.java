@@ -160,8 +160,9 @@ public class MainActivity extends Activity {
     
     @Override
     public void onResume(){
-    	super.onPause();
+    	super.onResume();
     	//Register the receiver to receive only the intents our intent Filter sets up
+    	mReceiver = new MyBroadcastReceiver(this);
     	registerReceiver(mReceiver,intentFilter);
     	
     }
