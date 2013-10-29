@@ -15,13 +15,14 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 	private WifiP2pManager manager;
 	private Channel channel;
 	
-	PeerListListener listener;
+	PeerStatus listener;
 	
 	public MyBroadcastReceiver (WifiP2pManager manager, Channel channel, MainActivity activity){
 		super();
 		this.activity = activity;
 		this.manager = manager;
 		this.channel = channel;
+		this.listener = new PeerStatus();
 	}
 	
 	@Override
@@ -43,8 +44,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         	
         	if(manager != null){
         		manager.requestPeers(channel, listener);
-        		WifiP2pDeviceList peers;
-        		//listener.onPeersAvailable(peers);
+        		        		
         	}
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
