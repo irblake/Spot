@@ -4,15 +4,24 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
+import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 	
 	private MainActivity activity;
+	private WifiP2pManager manager;
+	private Channel channel;
 	
-	public MyBroadcastReceiver (MainActivity activity){
+	PeerListListener listener;
+	
+	public MyBroadcastReceiver (WifiP2pManager manager, Channel channel, MainActivity activity){
 		super();
 		this.activity = activity;
+		this.manager = manager;
+		this.channel = channel;
 	}
 	
 	@Override
@@ -31,6 +40,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
             // The peer list has changed!  We should probably do something about
             // that.
+        	
+        	if(manager != null){
+        		manager.requestPeers(channel, listener);
+        		WifiP2pDeviceList peers;
+        		//listener.onPeersAvailable(peers);
+        	}
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 

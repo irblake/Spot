@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
     public void onResume(){
     	super.onResume();
     	//Register the receiver to receive only the intents our intent Filter sets up
-    	mReceiver = new MyBroadcastReceiver(this);
+    	mReceiver = new MyBroadcastReceiver(mManager,mChannel,this);
     	registerReceiver(mReceiver,intentFilter);
     	
     }
