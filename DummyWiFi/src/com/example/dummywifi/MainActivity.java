@@ -21,13 +21,27 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
+import android.text.Editable;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+	private ListView listView;
+	private ListView newView;
+	private ArrayAdapter<String> arrayAdapter;
+	private EditText editText1;
+	private ArrayList<String> listItems=new ArrayList<String>(); 
+	
+	public int clickCount = 0; 
 	
 	private Button p2pbutt;
-	private Button discoverbutt;
-	private Button frontButton;
+	private Button discoverbutt;	
+	private Button createBtn;
 	//We need an intent filter to catch only the intents we care about
 	private final IntentFilter intentFilter = new IntentFilter();
 	
@@ -36,7 +50,7 @@ public class MainActivity extends Activity {
 	private boolean isWifiP2pEnabled = false;
 	
 	//Declare the WifiP2pManager
-	WifiP2pManager mManager;
+	public WifiP2pManager mManager;
 	
 	//Declare the Channel
 	Channel mChannel;
@@ -55,11 +69,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        
+        arrayAdapter = new ArrayAdapter<String>(this, 
+		        android.R.layout.simple_list_item_1, listItems);
+		listView = (ListView) findViewById(R.id.list);
+		listView.setAdapter(arrayAdapter);
+		
+		//This is so the text box can be used. 
+		editText1 = (EditText) findViewById(R.id.editText1);
+		
+		//This needs to be changed. For some reason I have to say this twice; if I remove one I get a null pointer exception on load. 
+		newView = (ListView) findViewById(R.id.list);
         
         p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
         discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
-        frontButton = (Button) findViewById(R.id.atn_front_page);
+        createBtn = (Button) findViewById(R.id.button1);
         
         /*We care about 4 intents:
         When the WiFi status changes, when the list of available peers changes,
@@ -124,6 +147,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        /*
         frontButton.setOnClickListener(new OnClickListener() {
         	
         	public void onClick(View v){
@@ -132,8 +156,39 @@ public class MainActivity extends Activity {
         		startActivity(intent);
         	}
         });
+        */
         
-    }
+        newView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick (AdapterView<?> parent, View view, int position, long id){
+				Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+				startActivity(chatIntent);
+				//setContentView(R.layout.activity_chat);
+			}
+		});
+        //We need functionality to close a group when the user turns it off.
+        createBtn.setOnClickListener(new OnClickListener(){
+        	public void onClick(View v){
+        		Editable textbox = editText1.getText();
+          		listItems.add(textbox.toString());
+          		arrayAdapter.notifyDataSetChanged();
+          		mManager.createGroup(mChannel,new ActionListener(){
+          			
+                      @Override
+                      public void onSuccess() {
+                      	//What to do if createGroup works great
+                      	Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+          				startActivity(chatIntent);
+                      }
+
+                      @Override
+                      public void onFailure(int reasonCode) {
+                    	  Log.i("createGroup failed","Reason:" + reasonCode);
+                      }
+          		});
+        	}
+        });
+        
+    }//End On Create
 
     
     @Override
@@ -167,7 +222,6 @@ public class MainActivity extends Activity {
     	
     }
     
-
     
     public void connect(WifiP2pConfig config) {
         mManager.connect(mChannel, config, new ActionListener() {
