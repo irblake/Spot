@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
@@ -29,13 +30,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
 
-	private ListView listView;
+
+public class MainActivity extends Activity {
+	
+	public  ListView listView;
 	private ListView newView;
 	private ArrayAdapter<String> arrayAdapter;
 	private EditText editText1;
-	private ArrayList<String> listItems=new ArrayList<String>(); 
+	public static ArrayList<String> listItems=new ArrayList<String>();
+	public static ArrayList<WifiP2pConfig> configItems=new ArrayList<WifiP2pConfig>();
 	
 	public int clickCount = 0; 
 	
@@ -106,6 +110,8 @@ public class MainActivity extends Activity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
+        //Stops the keypad from automatically coming up on app start. 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         
         p2pbutt.setOnClickListener(new OnClickListener() {
 
@@ -134,8 +140,14 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(MainActivity.this, "Discovery Initiated",
+                    	for(int i = 0; i<configItems.size();i++){
+                        	listItems.add(configItems.get(i).deviceAddress);
+                        	arrayAdapter.notifyDataSetChanged();
+                        	Log.i("netcode","Device address is oooh:" + configItems.get(i).deviceAddress);
+                        }
+                    	Toast.makeText(MainActivity.this, "Discovery Initiated",
                                 Toast.LENGTH_SHORT).show();
+                        
                     }
 
                     @Override
@@ -160,22 +172,35 @@ public class MainActivity extends Activity {
         
         newView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick (AdapterView<?> parent, View view, int position, long id){
-				Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
-				startActivity(chatIntent);
+				mManager.connect(mChannel, configItems.get(position), new ActionListener(){
+					
+					@Override
+					public void onSuccess() {
+						Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+						startActivity(chatIntent);
+					}
+					
+					@Override 
+					public void onFailure(int reasonCode) {
+						Log.i("netcode","Reason:" + reasonCode);
+					}
+					
+				});
 				//setContentView(R.layout.activity_chat);
 			}
 		});
         //We need functionality to close a group when the user turns it off.
         createBtn.setOnClickListener(new OnClickListener(){
         	public void onClick(View v){
-        		Editable textbox = editText1.getText();
-          		listItems.add(textbox.toString());
-          		arrayAdapter.notifyDataSetChanged();
           		mManager.createGroup(mChannel,new ActionListener(){
           			
                       @Override
                       public void onSuccess() {
-                      	//What to do if createGroup works great
+                    	Editable textbox = editText1.getText();
+                    	listItems.add(textbox.toString());
+                    	arrayAdapter.notifyDataSetChanged();
+                    	editText1.setText("");
+                    	//What to do if createGroup works great
                       	Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
           				startActivity(chatIntent);
                       }

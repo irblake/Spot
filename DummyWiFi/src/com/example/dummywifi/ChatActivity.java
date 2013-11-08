@@ -67,7 +67,7 @@ public class ChatActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		Log.i("back","The back button was pressed");
-		mManager.cancelConnect(mChannel,new ActionListener() {
+		mManager.removeGroup(mChannel,new ActionListener() {
 			
 			@Override
             public void onSuccess() {
