@@ -10,6 +10,8 @@ import android.util.Log;
 
 public class GroupOwnerAsyncTask extends AsyncTask<Object,String,String> {
 
+	//All of this I am adapting out of:
+	// http://developer.android.com/guide/topics/connectivity/wifip2p.html#transferring
 	
 	@Override
 	protected String doInBackground(Object... params){
