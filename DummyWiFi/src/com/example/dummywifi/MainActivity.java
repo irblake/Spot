@@ -196,10 +196,12 @@ public class MainActivity extends Activity {
           			
                       @Override
                       public void onSuccess() {
+                    	
                     	Editable textbox = editText1.getText();
                     	listItems.add(textbox.toString());
                     	arrayAdapter.notifyDataSetChanged();
                     	editText1.setText("");
+                    	Log.i("createGroup", "success");
                     	//What to do if createGroup works great
                       	Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
           				startActivity(chatIntent);
@@ -207,7 +209,7 @@ public class MainActivity extends Activity {
 
                       @Override
                       public void onFailure(int reasonCode) {
-                    	  Log.i("createGroup failed","Reason:" + reasonCode);
+                    	  Log.i("createGroup","failed: Reason:" + reasonCode);
                       }
           		});
         	}

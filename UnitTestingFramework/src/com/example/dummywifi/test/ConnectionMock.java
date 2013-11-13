@@ -4,9 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.example.dummywifi.models.Connection;
+import com.example.dummywifi.util.Connection;
 
-public class ConnectionMock implements Connection {
+public class ConnectionMock extends Connection {
 	private ByteArrayOutputStream connectionOutputBuffer;
 	private ByteArrayInputStream connectionInputBuffer;
 	final byte[] defaultResponse = {1,2,3,4};
@@ -37,8 +37,11 @@ public class ConnectionMock implements Connection {
 	}
 	
 	public ConnectionMock(long latency) {
+		super(null);
+		
 		latencyMilliseconds = latency;
 		this.connectionOutputBuffer = new ByteArrayOutputStream();
 		this.connectionInputBuffer = new ByteArrayInputStream(defaultResponse);
+		
 	}
 }

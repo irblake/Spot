@@ -31,12 +31,14 @@ public class PeerStatus implements PeerListListener {
 		Log.i("netcode", "You have " + nPeers + " available.");
 		
 		for (WifiP2pDevice d : peerList.getDeviceList()) {
+			Log.i("netcode", "Found peer: " + d.deviceName + " (" + d.deviceAddress + ")");
+			
 			if(d.isGroupOwner() == true){
-				Log.i("netcode", "Found peer: " + d.deviceName + " (" + d.deviceAddress + ")");
 				WifiP2pConfig config = new WifiP2pConfig();
 	            config.deviceAddress = d.deviceAddress;
 	            config.wps.setup = WpsInfo.PBC;
 				MainActivity.configItems.add(config);
+				
 			}
 		}
 	}
