@@ -159,16 +159,6 @@ public class MainActivity extends Activity {
             }
         });
         
-        /*
-        frontButton.setOnClickListener(new OnClickListener() {
-        	
-        	public void onClick(View v){
-        		Intent intent = new Intent(MainActivity.this,FrontActivity.class);
-        	
-        		startActivity(intent);
-        	}
-        });
-        */
         
         newView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick (AdapterView<?> parent, View view, int position, long id){
