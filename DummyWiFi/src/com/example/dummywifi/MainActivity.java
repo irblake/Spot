@@ -176,7 +176,6 @@ public class MainActivity extends Activity {
 					}
 					
 				});
-				//setContentView(R.layout.activity_chat);
 			}
 		});
         //We need functionality to close a group when the user turns it off.
@@ -217,7 +216,7 @@ public class MainActivity extends Activity {
     
     /*This is the function That registers a MyBroadcastReceiver when the activity resumes from being paused.
       This allows the app to switch the broadcast receiver to switch on and off when the user pauses using the
-      app but does not end the process completley.
+      app but does not end the process completely.
     */
     
     @Override
