@@ -1,5 +1,7 @@
 package com.example.dummywifi;
 
+import java.net.InetSocketAddress;
+
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import com.example.dummywifi.GroupOwnerAsyncTask;
@@ -22,6 +24,7 @@ public class ConnectionInfo implements ConnectionInfoListener {
             // The other device acts as the client. In this case,
             // you'll want to create a client thread that connects to the group
             // owner.
+        	ClientAsyncTask clientTask = new ClientAsyncTask(new InetSocketAddress(groupOwnerAddress, 8888));
         }
 	}
 
