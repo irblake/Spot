@@ -1,9 +1,12 @@
 package com.example.dummywifi;
 
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
+import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.app.Activity;
@@ -16,6 +19,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.inputmethod.EditorInfo;
+import com.example.dummywifi.XUtil;
+import com.example.dummywifi.ConnectionInfo;
 
 public class ChatActivity extends Activity {
 	
@@ -26,6 +31,7 @@ public class ChatActivity extends Activity {
 	
 	//Declare the Channel
 	Channel mChannel;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,10 @@ public class ChatActivity extends Activity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
-		
+		//Create a WiFiP2PInfo instance
+        ConnectionInfo conInfo = new ConnectionInfo();
+        mManager.requestConnectionInfo(mChannel,conInfo);
+        
         editText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
