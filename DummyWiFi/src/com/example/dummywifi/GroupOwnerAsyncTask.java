@@ -8,15 +8,17 @@ import com.example.dummywifi.util.Connection;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import java.lang.Void;
 
-public class GroupOwnerAsyncTask extends AsyncTask<Object,String,String> {
+public class GroupOwnerAsyncTask extends AsyncTask<Void,Void,Void> {
 
 	//All of this I am adapting out of:
 	// http://developer.android.com/guide/topics/connectivity/wifip2p.html#transferring
 	private boolean stopReading = false;
 	
+	
 	@Override
-	protected String doInBackground(Object... params){
+	protected Void doInBackground(Void...voids){
 		Connection client;
 		
 		try{
@@ -24,12 +26,13 @@ public class GroupOwnerAsyncTask extends AsyncTask<Object,String,String> {
              * Create a server socket and wait for client connections. This
              * call blocks until a connection is accepted from a client
              */
+			Log.i("netcode","Group Owner asynchronous task has started");
             ServerSocket serverSocket = new ServerSocket(8888);
             //Creating a Connection instead of a raw socket so we can use that nice abstraction layer
             client = new Connection(serverSocket.accept());
             //Right now this string is a placeholder. It will have to become something the user typed in
-            String message= "dummy";
-            client.sendData(message.getBytes());
+            //String message= "dummy";
+            //client.sendData(message.getBytes());
 			
 		} catch(IOException e){
 			Log.e("netcode", "Looks like I really don't know what I am doing after all");
@@ -53,7 +56,7 @@ public class GroupOwnerAsyncTask extends AsyncTask<Object,String,String> {
 			}
 		}
 		
-		return "this probably won't return during normal execution";
+		return null;
 		
 	}
 	

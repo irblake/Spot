@@ -166,9 +166,11 @@ public class MainActivity extends Activity {
         newView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick (AdapterView<?> parent, View view, int position, long id){
 				mManager.connect(mChannel, configItems.get(position), new ActionListener(){
+				
 					
 					@Override
 					public void onSuccess() {
+						
 						Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
 						startActivity(chatIntent);
 					}
@@ -185,7 +187,7 @@ public class MainActivity extends Activity {
         createBtn.setOnClickListener(new OnClickListener(){
         	public void onClick(View v){
           		mManager.createGroup(mChannel,new ActionListener(){
-          			
+          		
                       @Override
                       public void onSuccess() {
                     	
@@ -256,26 +258,6 @@ public class MainActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
 
-            //I think this is what we need?
-            /*
-             * http://developer.android.com/training/connect-devices-wirelessly/wifi-direct.html
-            public void onConnectionInfoAvailable(final WifiP2pInfo info) {
-
-                // InetAddress from WifiP2pInfo struct.
-                String groupOwnerAddress = info.groupOwnerAddress.getHostAddress();
-
-                // After the group negotiation, we can determine the group owner.
-                if (info.groupFormed && info.isGroupOwner) {
-                    // Do whatever tasks are specific to the group owner.
-                    // One common case is creating a server thread and accepting
-                    // incoming connections.
-                } else if (info.groupFormed) {
-                    // The other device acts as the client. In this case,
-                    // you'll want to create a client thread that connects to the group
-                    // owner.
-                }
-            }
-            */
         });
     }
     

@@ -44,9 +44,7 @@ public class ChatActivity extends Activity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
-		//Create a WiFiP2PInfo instance
-        ConnectionInfo conInfo = new ConnectionInfo();
-        mManager.requestConnectionInfo(mChannel,conInfo);
+	
         
         editText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override

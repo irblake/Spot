@@ -8,8 +8,9 @@ import com.example.dummywifi.util.Connection;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import java.lang.Void;
 
-public class ClientAsyncTask extends AsyncTask<Object,String,String> {
+public class ClientAsyncTask extends AsyncTask<Void,Void,Void> {
 
 	private SocketAddress serverAddress;
 	private Connection serverConnection;
@@ -19,8 +20,9 @@ public class ClientAsyncTask extends AsyncTask<Object,String,String> {
 	}
 	
 	@Override
-	protected String doInBackground(Object... arg0) {
+	protected Void doInBackground(Void... voids) {
 		
+		Log.i("netcode","Client asynchronous task has started");
 		Socket clientSocket = new Socket();
 		try {
 			clientSocket.connect(serverAddress, 3000); // 3 second timeout
@@ -31,12 +33,13 @@ public class ClientAsyncTask extends AsyncTask<Object,String,String> {
 		}
 		
 		serverConnection = new Connection(clientSocket);
+		//this is a test to what data looks like when sent by client
 		String clientConnectMessage = "sup server its yo boy client";
 		
 		serverConnection.sendData(clientConnectMessage.getBytes());
 		
 		
-		return "success?";
+		return null;
 	}
 
 }
