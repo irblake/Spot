@@ -6,19 +6,25 @@ import java.util.Arrays;
 
 import com.example.dummywifi.util.Connection;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+import android.content.Context;
+
 import java.lang.Void;
 
-public class GroupOwnerAsyncTask extends AsyncTask<Void,Void,Void> {
+public class GroupOwnerAsyncTask implements Runnable {
 
 	//All of this I am adapting out of:
 	// http://developer.android.com/guide/topics/connectivity/wifip2p.html#transferring
 	private boolean stopReading = false;
 	
-	
+
+
 	@Override
-	protected Void doInBackground(Void...voids){
+	public void run() {
+		// TODO Auto-generated method stub
 		Connection client;
 		
 		try{
@@ -37,7 +43,7 @@ public class GroupOwnerAsyncTask extends AsyncTask<Void,Void,Void> {
 		} catch(IOException e){
 			Log.e("netcode", "Looks like I really don't know what I am doing after all");
 			Log.e("netcode",e.getMessage());
-			return null;
+			return;
 		}
 		
 		
@@ -56,7 +62,7 @@ public class GroupOwnerAsyncTask extends AsyncTask<Void,Void,Void> {
 			}
 		}
 		
-		return null;
+		return;
 		
 	}
 	

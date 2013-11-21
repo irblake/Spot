@@ -9,6 +9,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 	
@@ -62,6 +63,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
             if (networkInfo.isConnected()) {
 
+            	Log.i("netcode","farts");
                 // We are connected with the other device, request connection
                 // info to find group owner IP
             	//Request connection info does a callback that starts the tasks of sending and recieving data

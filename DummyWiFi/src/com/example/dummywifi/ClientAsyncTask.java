@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import java.lang.Void;
 
-public class ClientAsyncTask extends AsyncTask<Void,Void,Void> {
+public class ClientAsyncTask implements Runnable {
 
 	private SocketAddress serverAddress;
 	private Connection serverConnection;
@@ -20,16 +20,17 @@ public class ClientAsyncTask extends AsyncTask<Void,Void,Void> {
 	}
 	
 	@Override
-	protected Void doInBackground(Void... voids) {
-		
+	public void run() {
+		// TODO Auto-generated method stub
 		Log.i("netcode","Client asynchronous task has started");
+		System.out.println("Client socket code started");
 		Socket clientSocket = new Socket();
 		try {
 			clientSocket.connect(serverAddress, 3000); // 3 second timeout
 			
 		} catch (IOException e) {
 			Log.e("netcode", "Unable to connect to server (address=" + serverAddress + ")");
-			return null;
+			return;
 		}
 		
 		serverConnection = new Connection(clientSocket);
@@ -39,7 +40,8 @@ public class ClientAsyncTask extends AsyncTask<Void,Void,Void> {
 		serverConnection.sendData(clientConnectMessage.getBytes());
 		
 		
-		return null;
+		return;
+		
 	}
 
 }
