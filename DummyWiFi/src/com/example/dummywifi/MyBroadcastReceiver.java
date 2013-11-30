@@ -63,12 +63,13 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
             if (networkInfo.isConnected()) {
 
-            	Log.i("netcode","farts");
+            	Log.i("netcode","connection status changed: connected");
                 // We are connected with the other device, request connection
                 // info to find group owner IP
             	//Request connection info does a callback that starts the tasks of sending and recieving data
             	ConnectionInfo connectionListener = new ConnectionInfo();
                 manager.requestConnectionInfo(channel, connectionListener);
+                Log.i("netcode", "I requested connection info");
             }
         
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {

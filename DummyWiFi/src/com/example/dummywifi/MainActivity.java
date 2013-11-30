@@ -3,6 +3,7 @@ package com.example.dummywifi;
 
 
 
+import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -11,6 +12,7 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 	
 	public  ListView listView;
-	private ListView newView;
+	//private ListView newView;
 	private ArrayAdapter<String> arrayAdapter;
 	private EditText editText1;
 	public static ArrayList<String> listItems=new ArrayList<String>();
@@ -46,6 +48,7 @@ public class MainActivity extends Activity {
 	
 	public int clickCount = 0; 
 	
+	public static ProgressDialog progressDialog = null;
 	private Button p2pbutt;
 	private Button discoverbutt;	
 	private Button createBtn;
@@ -79,16 +82,14 @@ public class MainActivity extends Activity {
         
         arrayAdapter = new ArrayAdapter<String>(this, 
 		        android.R.layout.simple_list_item_1, listItems);
-		listView = (ListView) findViewById(R.id.list);
+		
+        listView = (ListView) findViewById(R.id.list);
 		listView.setAdapter(arrayAdapter);
 		
 		//This is so the text box can be used. 
 		editText1 = (EditText) findViewById(R.id.editText1);
 		
-		//This needs to be changed. For some reason I have to say this twice; if I remove one I get a null pointer exception on load. 
-		newView = (ListView) findViewById(R.id.list);
-        
-        p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
+		p2pbutt = (Button) findViewById(R.id.atn_direct_enable);
         discoverbutt = (Button) findViewById(R.id.atn_direct_discover);
         createBtn = (Button) findViewById(R.id.button1);
         
@@ -128,7 +129,7 @@ public class MainActivity extends Activity {
                     // WiFiDeviceBroadcastReceiver instead.
             		startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
                 } else {
-                    System.out.println("channel or manager is null");
+                    Log.i("netcode", "channel or manager is null");
                 }
             }
         });
@@ -164,16 +165,36 @@ public class MainActivity extends Activity {
         });
         
         
-        newView.setOnItemClickListener(new OnItemClickListener() {
+        listView.setOnItemClickListener(new OnItemClickListener() {
+        	
+        	@Override
 			public void onItemClick (AdapterView<?> parent, View view, int position, long id){
-				mManager.connect(mChannel, configItems.get(position), new ActionListener(){
+				WifiP2pConfig config = new WifiP2pConfig();
+				config.deviceAddress = configItems.get(position).deviceAddress;
+				config.wps.setup = WpsInfo.PBC;
+				
+				Log.i("netcode", "you clicked the listview item, connecting to:" + config.deviceAddress);
+				
+				if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                progressDialog = ProgressDialog.show(MainActivity.this, "Press back to cancel",
+                        "Connecting to :" + config.deviceAddress, true, true
+//                        new DialogInterface.OnCancelListener() {
+//
+//                            @Override
+//                            public void onCancel(DialogInterface dialog) {
+//                                ((DeviceActionListener) getActivity()).cancelDisconnect();
+//                            }
+//                        }
+                        );
+				
+				mManager.connect(mChannel, config, new ActionListener(){
 				
 					
 					@Override
 					public void onSuccess() {
-						
-						Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
-						startActivity(chatIntent);
+						// Don't start the chat intent until we get the socket open						
 					}
 					
 					@Override 
@@ -198,8 +219,9 @@ public class MainActivity extends Activity {
                     	editText1.setText("");
                     	Log.i("createGroup", "success");
                     	//What to do if createGroup works great
-                      	Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
-          				startActivity(chatIntent);
+                    	// No intent switching until the socket is connected
+                      	//Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+          				//startActivity(chatIntent);
                       }
 
                       @Override
