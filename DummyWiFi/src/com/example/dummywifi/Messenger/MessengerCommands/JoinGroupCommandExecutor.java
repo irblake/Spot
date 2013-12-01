@@ -10,6 +10,7 @@ public class JoinGroupCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean executeCommand(ChatSession session, Client caller, String command, String[] args) {
 		session.clientJoin(caller);
+		
 		return true;
 	}
 

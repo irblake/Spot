@@ -67,7 +67,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 // We are connected with the other device, request connection
                 // info to find group owner IP
             	//Request connection info does a callback that starts the tasks of sending and recieving data
-            	ConnectionInfo connectionListener = new ConnectionInfo();
+            	ConnectionInfo connectionListener = new ConnectionInfo(activity);
                 manager.requestConnectionInfo(channel, connectionListener);
                 Log.i("netcode", "I requested connection info");
             }

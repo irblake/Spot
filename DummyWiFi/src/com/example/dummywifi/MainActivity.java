@@ -31,6 +31,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.os.Handler;
+import android.os.Message;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -67,6 +69,11 @@ public class MainActivity extends Activity {
 
 	//We need to make a MyBroadCastReceiver to... receive broadcasts!?
 	BroadcastReceiver mReceiver;
+	
+	//This handler will take care of receiving messages from GroupMemberClientAsyncTask
+	//The "handling" will be starting the ChatActivity, this way we know sockets are
+	//open before we start that ChatActivity.
+	public Handler handler;
 	
 	//We need a setter function to set the value of the boolean isWifiP2pEnabled
 	//Do this when the user's peer-to-peer wifi gets enabled from disabled or disabled from enabled.
@@ -231,6 +238,15 @@ public class MainActivity extends Activity {
           		});
         	}
         });
+        handler = new Handler() {
+        	@Override
+        	public void handleMessage(Message msg) {
+        		if (msg.what == 100){
+        			Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+        			startActivity(chatIntent);
+        		}
+        	}
+        };
         
     }//End On Create
 

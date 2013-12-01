@@ -2,12 +2,17 @@ package com.example.dummywifi;
 
 import java.net.InetSocketAddress;
 
+import android.app.Activity;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 public class ConnectionInfo implements ConnectionInfoListener {
-		
+	private Activity mainActivity;
+	
+	public ConnectionInfo (Activity mainActivity) {
+		this.mainActivity = mainActivity;
+	}
 	@Override
 	public void onConnectionInfoAvailable(WifiP2pInfo info) {
 		if (MainActivity.progressDialog != null) {
@@ -29,7 +34,7 @@ public class ConnectionInfo implements ConnectionInfoListener {
         		Log.i("netcode", "GOSAT running");
         		
         		// Now the group leader has to be a client
-        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(new InetSocketAddress(groupOwnerAddress, 8888));
+        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
         		Thread serverClientThread = new Thread(gmcat);
         		serverClientThread.start();
         		
@@ -39,7 +44,7 @@ public class ConnectionInfo implements ConnectionInfoListener {
             	// owner.
         		// Does the async thread start automatically once this class is instantiated?
         		Log.i("netcode", "Running GMCAT");
-        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(new InetSocketAddress(groupOwnerAddress, 8888));
+        		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(mainActivity, new InetSocketAddress(groupOwnerAddress, 8888));
         		Thread clientThread = new Thread(gmcat);
         		clientThread.start();
         		Log.i("netcode", "GMCAT is running");

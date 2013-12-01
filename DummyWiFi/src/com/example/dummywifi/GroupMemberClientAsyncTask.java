@@ -6,14 +6,19 @@ import java.net.SocketAddress;
 
 import com.example.dummywifi.util.Connection;
 
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Message;
 
 public class GroupMemberClientAsyncTask implements Runnable {
 
 	private SocketAddress groupOwnerAddress;
+	public static int GMCAT_MESSAGE = 100;
+	private Activity mainActivity;
 	
-	public GroupMemberClientAsyncTask(SocketAddress groupOwnerAddress) {
+	public GroupMemberClientAsyncTask(Activity mainActivity, SocketAddress groupOwnerAddress) {
 		this.groupOwnerAddress = groupOwnerAddress;
+		this.mainActivity = mainActivity;
 	}
 	
 	@Override
@@ -27,6 +32,9 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			connection = new Connection(socket);
 				
 			connection.sendText("!joingroup");
+			Message msg = new Message();
+			msg.what = GMCAT_MESSAGE;
+			((MainActivity)mainActivity).handler.sendMessage(msg);
 			Thread.sleep(500);
 			//socket.getOutputStream().write("!joingroup".getBytes());
 			
