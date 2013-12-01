@@ -5,9 +5,7 @@ import java.net.InetSocketAddress;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
-import android.os.AsyncTask;
 
-import com.example.dummywifi.GroupOwnerAsyncTask;
 public class ConnectionInfo implements ConnectionInfoListener {
 
 	
@@ -16,12 +14,6 @@ public class ConnectionInfo implements ConnectionInfoListener {
 		if (MainActivity.progressDialog != null) {
 			MainActivity.progressDialog.dismiss();
 		}
-		// TODO Auto-generated method stub
-		//Give us a WifiP2pInfo
-		Log.i("netcode","before requesting WifiP2pInfo");
-		//info = new WifiP2pInfo();
-		// InetAddress from WifiP2pInfo struct.
-		Log.i("netcode","after requesting WifiP2pInfo");
 		
 		if (info.groupOwnerAddress != null) {
 			String groupOwnerAddress = info.groupOwnerAddress.getHostAddress();
@@ -31,10 +23,6 @@ public class ConnectionInfo implements ConnectionInfoListener {
             	// One common case is creating a server thread and accepting
         		// incoming connections.
         		Log.i("netcode", "I am the group leader");
-        		// Does the async thread start automatically once this class is instantiated?
-        		//System.out.println("Group owner recognized!");
-        		//Thread ownerTask = new Thread(new GroupOwnerAsyncTask());
-        		//ownerTask.run();
         		GroupOwnerServerAsyncTask gosat = new GroupOwnerServerAsyncTask();
         		Log.i("netcode", "Running GroupOwnerAsyncTask");
         		gosat.execute();
@@ -45,9 +33,6 @@ public class ConnectionInfo implements ConnectionInfoListener {
             	// you'll want to create a client thread that connects to the group
             	// owner.
         		// Does the async thread start automatically once this class is instantiated?
-        		//System.out.println("Client recognized");
-        		//Thread clientTask = new Thread(new ClientAsyncTask(new InetSocketAddress(groupOwnerAddress, 8888)));
-        		//clientTask.run();
         		Log.i("netcode", "Running GMCAT");
         		GroupMemberClientAsyncTask gmcat = new GroupMemberClientAsyncTask(new InetSocketAddress(groupOwnerAddress, 8888));
         		gmcat.execute();

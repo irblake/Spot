@@ -41,7 +41,7 @@ public class Connection {
 		
 		int result;
 		try {
-			result = connectionSocket.getInputStream().read(buffer, 0, 2047);
+			result = connectionSocket.getInputStream().read(buffer, 0, 1023);
 		} catch (IOException e) {
 			return false;
 		}
@@ -53,5 +53,18 @@ public class Connection {
 		return true; // data was read and put into buffer		
 	}
 
+	// wrapper for sending text
+	public boolean sendText(String text) {
+		return sendData(text.getBytes());
+	}
+	
+	public void close() {
+		try {
+			connectionSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

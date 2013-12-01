@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import com.example.dummywifi.util.Connection;
+
 import android.os.AsyncTask;
 
 public class GroupMemberClientAsyncTask extends
@@ -18,19 +20,32 @@ public class GroupMemberClientAsyncTask extends
 	@Override
 	protected String doInBackground(Void... params) {
 		Socket socket = new Socket();
+		Connection connection = null;
 		
 		try {
 			socket.bind(null);
 			socket.connect(groupOwnerAddress, 3000);
+			connection = new Connection(socket);
+				
+			connection.sendText("!joingroup");
+			//socket.getOutputStream().write("!joingroup".getBytes());
 			
-			socket.getOutputStream().write("Hello server".getBytes());
+			// for testing messages
+			while (true) {
+				Thread.sleep(5000);
+				connection.sendText("hello");
+			}
 			
-			socket.getOutputStream().flush();
-			socket.close();
+			//socket.getOutputStream().flush();
+			
 			
 		} catch (IOException Ex){
 			Ex.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		if (connection != null) 
+			connection.close();
 		
 		return null;
 	}

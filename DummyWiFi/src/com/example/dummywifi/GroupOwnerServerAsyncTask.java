@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.dummywifi.models.Client;
+import com.example.dummywifi.util.Connection;
+
 //import com.example.android.wifidirect.WiFiDirectActivity;
 
 import android.content.Context;
@@ -33,27 +36,35 @@ public class GroupOwnerServerAsyncTask extends
 
     @Override
     protected String doInBackground(Void... params) {
+    	ServerSocket serverSocket;
         try {
-            ServerSocket serverSocket = new ServerSocket(8888);
+            serverSocket = new ServerSocket(8888);
             Log.d("netcode", "Server: Socket opened");
-            Socket client = serverSocket.accept();
-            Log.d("netcode", "Server: connection done");
             
+            while (!serverSocket.isClosed()) { // shouldn't happen unless maybe the wifi gets turned off
+            	// keep waiting for clients to come, then accept them and make a worker for them
+	            Socket clientSocket = serverSocket.accept();
+	            
+	            Log.d("netcode", "Server: a connection with a client has been established");
+	            
+	            Connection connection = new Connection(clientSocket);	                 
+	            Client client = new Client(connection);
+	            
+	            GroupOwnerWorkerAsyncTask gowat = new GroupOwnerWorkerAsyncTask(client);
+	            Log.d("netcode", "Worker created, running it");
+	            
+	            Thread workerThread = new Thread(gowat);
+	            workerThread.start();
+	            
+	            Log.d("netcode", "Worker thread started, status is: " + workerThread.getState());
+	                                   
+            }
             
-            Log.d("netcode", "server: receiving data");
-            
-            InputStream inputstream = client.getInputStream();
-            byte readBytes[] = new byte[1024];
-            inputstream.read(readBytes);
-            String readString = new String(readBytes);
-            
-            Log.d("netcode", "received message: " + readString);
-            
-            //copyFile(inputstream, new FileOutputStream(f));
             serverSocket.close();
-            return readString; //f.getAbsolutePath();
+            return null; 
         } catch (IOException e) {
             Log.e("netcode", e.getMessage());
+            
             return null;
         }
     }	
