@@ -30,6 +30,7 @@ public class Connection {
 		
 		try {
 			connectionSocket.getOutputStream().write(data);
+			connectionSocket.getOutputStream().flush();
 		} catch (IOException e) {
 			return false;
 		}

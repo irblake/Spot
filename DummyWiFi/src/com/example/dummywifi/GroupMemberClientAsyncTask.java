@@ -27,6 +27,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			connection = new Connection(socket);
 				
 			connection.sendText("!joingroup");
+			Thread.sleep(500);
 			//socket.getOutputStream().write("!joingroup".getBytes());
 			
 			// for testing messages
