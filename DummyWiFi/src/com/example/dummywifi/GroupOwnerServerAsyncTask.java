@@ -20,8 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class GroupOwnerServerAsyncTask extends
-		AsyncTask<Void, Void, String> {
+public class GroupOwnerServerAsyncTask implements Runnable {
 
 	//private Context context;
     //private TextView statusText;
@@ -38,7 +37,7 @@ public class GroupOwnerServerAsyncTask extends
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    public void run() {
     	ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(8888);
@@ -64,13 +63,12 @@ public class GroupOwnerServerAsyncTask extends
             }
             
             serverSocket.close();
-            return null; 
+            return; 
         } catch (IOException e) {
             Log.e("netcode", e.getMessage());
             
-            return null;
+            return;
         }
     }	
-	
 
 }

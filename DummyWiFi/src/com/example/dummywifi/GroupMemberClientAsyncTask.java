@@ -8,8 +8,7 @@ import com.example.dummywifi.util.Connection;
 
 import android.os.AsyncTask;
 
-public class GroupMemberClientAsyncTask extends
-		AsyncTask<Void, Void, String> {
+public class GroupMemberClientAsyncTask implements Runnable {
 
 	private SocketAddress groupOwnerAddress;
 	
@@ -18,7 +17,7 @@ public class GroupMemberClientAsyncTask extends
 	}
 	
 	@Override
-	protected String doInBackground(Void... params) {
+	public void run() {
 		Socket socket = new Socket();
 		Connection connection = null;
 		
@@ -48,7 +47,7 @@ public class GroupMemberClientAsyncTask extends
 		if (connection != null) 
 			connection.close();
 		
-		return null;
+		return;
 	}
 	
 	
