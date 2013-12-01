@@ -273,6 +273,8 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess() {
                 // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+            	//Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
+  				//startActivity(chatIntent);
             }
 
             @Override

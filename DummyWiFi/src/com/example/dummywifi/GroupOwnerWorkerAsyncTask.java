@@ -3,7 +3,10 @@ package com.example.dummywifi;
 import java.util.Hashtable;
 import java.util.Map;
 
-import com.example.dummywifi.MessengerCommands.CommandExecutor;
+import com.example.dummywifi.Messenger.ChatSession;
+import com.example.dummywifi.Messenger.MessengerCommands.CommandExecutor;
+import com.example.dummywifi.Messenger.MessengerCommands.JoinGroupCommandExecutor;
+import com.example.dummywifi.Messenger.MessengerCommands.SetUsernameCommandExecutor;
 import com.example.dummywifi.models.Client;
 import com.example.dummywifi.util.Connection;
 
@@ -21,13 +24,22 @@ import android.util.Log;
 
 
 public class GroupOwnerWorkerAsyncTask implements Runnable {
-	
-	
+		
 	private Client client;
-	public static Hashtable<String, CommandExecutor> commandMap = new Hashtable<String, CommandExecutor> ();
+	private ChatSession session;
 	
-	public GroupOwnerWorkerAsyncTask(Client client){ 
+	public static Hashtable<String, CommandExecutor> commandMap;
+	
+	static {
+		commandMap = new Hashtable<String, CommandExecutor> ();
+		// add commands to the command map as you implement them
+		commandMap.put(SetUsernameCommandExecutor.COMMAND_MESSAGE, new SetUsernameCommandExecutor());
+		commandMap.put(JoinGroupCommandExecutor.COMMAND_MESSAGE, new JoinGroupCommandExecutor());
+	}
+	
+	public GroupOwnerWorkerAsyncTask(Client client, ChatSession session){ 
 		this.client = client;
+		this.session = session;
 	}
 	
 	private String trimNullBytes(byte[] in) {
@@ -42,10 +54,12 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
     }
 	
 	private void runCommand(String command, String[] args) {
-		CommandExecutor exec = commandMap.get(command);
-		if (exec != null) {
-			exec.executeCommand(client, command, args);
-		}		
+		if (commandMap != null) {
+			CommandExecutor exec = commandMap.get(command);
+			if (exec != null) {
+				exec.executeCommand(session, client, command, args);
+			}	
+		}
 	}
 
 	@Override
@@ -55,7 +69,7 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
 		String readString = null;
 		
 		while (connection.isOpen()) {            	
-        	byte[] buffer = new byte[10000];
+        	byte[] buffer = new byte[Connection.MAX_READ_SIZE];
         	//Log.d("message", "trying to receive a message");
             if (connection.receiveData(buffer)) {
             	//Log.d("message", "message received");

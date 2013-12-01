@@ -5,7 +5,7 @@ import com.example.dummywifi.util.Connection;
 public class Client {
 	
 	protected String userName, deviceId;
-	private long id; // So the server can keep track of clients even if they haven't set a username or device id yet
+	private int id; // So the server can keep track of clients even if they haven't set a username or device id yet
 	private boolean isAdmin, isModerator; // for if we want this functionality later
 	
 	protected Connection connection;
@@ -27,9 +27,14 @@ public class Client {
 		return connection;
 	}
 	
-	public Client(Connection connection) {
+	public int getId() {
+		return id;
+	}
+	
+	public Client(Connection connection, int id) {
 		this.connection = connection;
 		this.isAdmin = this.isModerator = false;
+		this.id = id;
 	}
 	
 	public boolean compareTo(Client other) {

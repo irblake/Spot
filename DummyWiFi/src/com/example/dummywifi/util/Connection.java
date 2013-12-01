@@ -8,6 +8,8 @@ import java.net.Socket;
  * Useful for sending & receiving data with less code & no need to understand sockets
 */
 public class Connection {
+	public static final int MAX_READ_SIZE = 2048;
+	
 	private Socket connectionSocket;
 	
 	public Connection(Socket source) {
@@ -41,7 +43,7 @@ public class Connection {
 		
 		int result;
 		try {
-			result = connectionSocket.getInputStream().read(buffer, 0, 1023);
+			result = connectionSocket.getInputStream().read(buffer, 0, MAX_READ_SIZE - 1);
 		} catch (IOException e) {
 			return false;
 		}

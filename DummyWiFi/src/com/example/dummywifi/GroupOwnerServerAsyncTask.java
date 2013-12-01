@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.dummywifi.Messenger.ChatSession;
 import com.example.dummywifi.models.Client;
 import com.example.dummywifi.util.Connection;
 
@@ -24,6 +25,7 @@ public class GroupOwnerServerAsyncTask extends
 
 	//private Context context;
     //private TextView statusText;
+	ChatSession session; // the session that this task is serving
 
     /**
      * @param context
@@ -32,6 +34,7 @@ public class GroupOwnerServerAsyncTask extends
     public GroupOwnerServerAsyncTask(/*Context context, View statusText*/) {
         /*this.context = context;
         this.statusText = (TextView) statusText;*/
+    	session = new ChatSession();
     }
 
     @Override
@@ -48,9 +51,9 @@ public class GroupOwnerServerAsyncTask extends
 	            Log.d("netcode", "Server: a connection with a client has been established");
 	            
 	            Connection connection = new Connection(clientSocket);	                 
-	            Client client = new Client(connection);
+	            Client client = new Client(connection, session.getNextId());
 	            
-	            GroupOwnerWorkerAsyncTask gowat = new GroupOwnerWorkerAsyncTask(client);
+	            GroupOwnerWorkerAsyncTask gowat = new GroupOwnerWorkerAsyncTask(client, session);
 	            Log.d("netcode", "Worker created, running it");
 	            
 	            Thread workerThread = new Thread(gowat);

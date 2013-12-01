@@ -7,8 +7,7 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.util.Log;
 
 public class ConnectionInfo implements ConnectionInfoListener {
-
-	
+		
 	@Override
 	public void onConnectionInfoAvailable(WifiP2pInfo info) {
 		if (MainActivity.progressDialog != null) {

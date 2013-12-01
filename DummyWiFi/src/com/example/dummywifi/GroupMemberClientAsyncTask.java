@@ -31,9 +31,10 @@ public class GroupMemberClientAsyncTask extends
 			//socket.getOutputStream().write("!joingroup".getBytes());
 			
 			// for testing messages
-			while (true) {
-				Thread.sleep(5000);
+			
+			while (connection.isOpen()) {				
 				connection.sendText("hello");
+				Thread.sleep(5000);
 			}
 			
 			//socket.getOutputStream().flush();
