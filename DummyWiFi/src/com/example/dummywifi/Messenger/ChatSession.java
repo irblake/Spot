@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.dummywifi.ChatActivity;
 import com.example.dummywifi.models.Client;
+import com.example.dummywifi.util.Connection;
 
 /**
  * This class contains all of the information about a chat session
@@ -22,10 +23,32 @@ public class ChatSession {
 	
 	private int id_counter;
 	
-	static final int dispatchDelay = 750; // 750ms
+	
+	public static final int dispatchDelay = 750; // 750ms
+	public static final String messageDelim = "_&&_";
 	
 	public synchronized void queueMessage(String message) { // this is safe to call from any thread		
-		messageQueue.add(message);		
+		messageQueue.add(message);
+		Log.d("session", "Added:" + message + " to the message queue");
+	}
+	
+	public int fetchMessages(int lastToken, StringBuffer queueBuffer) {
+		if (lastToken < messageQueue.size() - 1) { // retrieve messages until you have the current message
+			int i, byteCount = 0;
+			
+			for (i = lastToken; i < messageQueue.size(); i ++) {
+				String message = messageQueue.get(i) + messageDelim;
+				byteCount += message.getBytes().length;
+				
+				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken + 1)) { // you can't send more messages due to the byte limit
+					return i - 1;
+				}
+				queueBuffer.append(message);
+			}
+			
+			return i;
+		}
+		return lastToken;
 	}
 	
 	public List<Client> getConnectedClients() {
