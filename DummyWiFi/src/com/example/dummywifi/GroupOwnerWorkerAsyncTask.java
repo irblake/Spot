@@ -43,17 +43,6 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
 		this.session = session;
 	}
 	
-	private String trimNullBytes(byte[] in) {
-    	StringBuffer sb = new StringBuffer();
-    	
-    	for (int i = 0; i < in.length; i++) {
-    		if (in[i] == 0) break;
-    		sb.append((char)in[i]);
-    	}
-    	
-    	return sb.toString();
-    }
-	
 	private void runCommand(String command, String[] args) {
 		if (commandMap != null) {
 			CommandExecutor exec = commandMap.get(command);
@@ -67,15 +56,32 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
 	public void run() {		
 		Log.d("netcode", "worker listening to client messages");
 		Connection connection = client.getConnection();
+		
 		String readString = null;
+		int lastToken = 0;
+		StringBuffer messages = new StringBuffer();
 		
 		while (connection.isOpen()) {            	
-        	byte[] buffer = new byte[Connection.MAX_READ_SIZE];
         	//Log.d("message", "trying to receive a message");
-            if (connection.receiveData(buffer)) {
+			// dispatch messages in message queue, then check for more messages
+			//Log.d("gowat", "Loop Iteration");
+			// check for more messages
+			int result = session.fetchMessages(lastToken, messages);
+			//Log.d("gowat", "fetchMessages returned!");
+			
+			if (result != lastToken) { // there are new messages, send them to the client				
+				//Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
+				lastToken = result;
+				connection.sendText(messages.toString());
+				messages = new StringBuffer();
+			} else {
+				//Log.d("gowat", "no new messages. token: " + lastToken);
+			}
+        	
+            if ((readString = connection.receiveString()) != null) {
             	//Log.d("message", "message received");
-            	readString = trimNullBytes(buffer);
-            	Log.d("message", "received message: " + readString);
+            	
+            	//Log.d("message", "received message: " + readString);
             	
             	if (readString.startsWith("!")) {
             		// it's a command
@@ -84,20 +90,15 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
             	} else {
             		// it's a message
             		// put it in the message queue
-            		Log.d("message", "put '" + readString + "' into the message queue");
-            		Message msg = new Message();
-            		msg.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
-            		msg.obj = readString;
-            		
-            		// This line will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
-            		// but that work will be moved to another thread spawned when the send button is pushed 
-            		((ChatActivity)ChatActivity.currentChatActivity).handler.sendMessage(msg);
+            		session.queueMessage(readString);
+            		Log.d("message", "put '" + readString + "' into the message queue");            		
             	}
             }
             try {
-				Thread.sleep(500);
+				Thread.sleep(ChatSession.dispatchDelay);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
+				//Log.e("gowat", "exception");
 				e.printStackTrace();
 			}
         }

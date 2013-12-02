@@ -87,7 +87,9 @@ public class ChatActivity extends Activity {
         handler = new Handler() {
         	@Override
         	public void handleMessage(Message msg) {
+        		Log.d("chatview", "received new message for display: " + (String)msg.obj);
         		if (msg.what == GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE){
+        			
         			String newMessage = (String)msg.obj;
         			
         			listItems.add(newMessage);
