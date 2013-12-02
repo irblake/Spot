@@ -44,6 +44,7 @@ public class ChatActivity extends Activity {
 	Channel mChannel;
 	
 	public static Activity currentChatActivity = null;
+	public GroupMemberClientAsyncTask gmcat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +69,15 @@ public class ChatActivity extends Activity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-                	listItems.add("anon: "+editText.getText().toString());
+                	/*listItems.add("anon: "+editText.getText().toString());
                 	arrayAdapter.notifyDataSetChanged();
                 	listView.setSelection((arrayAdapter.getCount()) - 1);
-                	editText.setText("");
+                	editText.setText("");*/
+                	if (gmcat != null) {
+                		gmcat.queueMessageToSend(editText.getText().toString());
+                		editText.setText("");
+                	}
+                	
                 	//EditText et_history = (EditText) findViewById(R.id.list);
             		//String history = et_history.getText().toString();
             		//String message = editText.getText().toString();

@@ -33,7 +33,8 @@ public class ChatSession {
 	}
 	
 	public int fetchMessages(int lastToken, StringBuffer queueBuffer) {
-		if (lastToken < messageQueue.size() - 1) { // retrieve messages until you have the current message
+		//Log.d("gowat", "fetchMessages called, token = " + lastToken + " size: " + messageQueue.size());
+		if (lastToken < messageQueue.size()) { // retrieve messages until you have the current message
 			int i, byteCount = 0;
 			
 			for (i = lastToken; i < messageQueue.size(); i ++) {

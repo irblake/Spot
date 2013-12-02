@@ -36,7 +36,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	@Override
 	public void run() {
 		Socket socket = new Socket();
-		Connection connection = null;
+		Connection connection = null;		
 		
 		try {
 			socket.bind(null);
@@ -51,6 +51,10 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			//socket.getOutputStream().write("!joingroup".getBytes());
 			
 			// for testing messages
+			while (ChatActivity.currentChatActivity == null) {
+				Thread.sleep(10);
+			}
+			((ChatActivity)ChatActivity.currentChatActivity).gmcat = this;
 			
 			while (connection.isOpen()) {
 				if (messagesToSend.size() > 0) {
