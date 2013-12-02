@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/TableLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:background="@color/YotsubaB">
 
-    <EditText
-        android:id="@+id/messages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.98"
-        android:clickable="false"
-        android:ems="10"
-        android:inputType="textMultiLine|none"
-        android:longClickable="false"
-        android:scrollHorizontally="false"
-        android:selectAllOnFocus="false" />
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="391dp"
+        android:layout_below="@+id/atn_direct_discover"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.78" 
+        android:cacheColorHint="#00000000" >
+    </ListView>
 
     <EditText
         android:id="@+id/send"
@@ -24,8 +22,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/edit_message"
-        android:inputType="text"
-        android:imeOptions="actionSend" >
+        android:imeOptions="actionSend"
+        android:inputType="text" >
+
         <requestFocus />
     </EditText>
 
