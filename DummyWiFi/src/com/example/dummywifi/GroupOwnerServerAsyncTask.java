@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 import com.example.dummywifi.Messenger.ChatSession;
 import com.example.dummywifi.models.Client;
@@ -41,6 +42,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
     @Override
     public void run() {
     	ServerSocket serverSocket;
+    	
         try {
             serverSocket = new ServerSocket(8888);
             Log.d("netcode", "Server: Socket opened");
@@ -53,6 +55,7 @@ public class GroupOwnerServerAsyncTask implements Runnable {
 	            
 	            Connection connection = new Connection(clientSocket);	                 
 	            Client client = new Client(connection, session.getNextId());
+	            client.setUserName("user" + new Random().nextInt(100));
 	            
 	            GroupOwnerWorkerAsyncTask gowat = new GroupOwnerWorkerAsyncTask(client, session);
 	            Log.d("netcode", "Worker created, running it");

@@ -90,7 +90,7 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
             	} else {
             		// it's a message
             		// put it in the message queue
-            		session.queueMessage(readString);
+            		session.queueMessage(client.getUserName() + ": " +  readString);
             		Log.d("message", "put '" + readString + "' into the message queue");            		
             	}
             }
