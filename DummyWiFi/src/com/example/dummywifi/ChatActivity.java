@@ -1,6 +1,8 @@
 package com.example.dummywifi;
 
 
+import java.util.ArrayList;
+
 import android.net.wifi.WifiInfo;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -15,7 +17,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.util.Log;
 import android.widget.TextView;
@@ -29,6 +33,10 @@ public class ChatActivity extends Activity {
 	
 	String username = "username";
 	
+	public  ListView listView;
+	private ArrayAdapter<String> arrayAdapter;
+	public static ArrayList<String> listItems=new ArrayList<String>();
+
 	//Declare the WifiP2pManager
 	public WifiP2pManager mManager;
 	
@@ -48,19 +56,28 @@ public class ChatActivity extends Activity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
-	
+      
+        arrayAdapter = new ArrayAdapter<String>(this, 
+		        android.R.layout.simple_list_item_1, listItems);
+        
+        listView = (ListView) findViewById(R.id.list);
+		listView.setAdapter(arrayAdapter);
         
         editText.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
-            		EditText et_history = (EditText) findViewById(R.id.messages);
-            		String history = et_history.getText().toString();
-            		String message = editText.getText().toString();
-            		if (message == "") return true;
-            		editText.setText ("");
-            		et_history.setText (history + username + ": " + message + "\n");
+                	listItems.add("anon: "+editText.getText().toString());
+                	arrayAdapter.notifyDataSetChanged();
+                	listView.setSelection((arrayAdapter.getCount()) - 1);
+                	editText.setText("");
+                	//EditText et_history = (EditText) findViewById(R.id.list);
+            		//String history = et_history.getText().toString();
+            		//String message = editText.getText().toString();
+            		//if (message == "") return true;
+            		//editText.setText ("");
+            		//et_history.setText (history + username + ": " + message + "\n");
                     handled = true;
                 }
                 return handled;
@@ -73,12 +90,15 @@ public class ChatActivity extends Activity {
         		if (msg.what == GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE){
         			String newMessage = (String)msg.obj;
         			
-        			EditText et_history = (EditText) findViewById(R.id.messages);
-            		String history = et_history.getText().toString();
+        			listItems.add(newMessage);
+                	arrayAdapter.notifyDataSetChanged();
+                	listView.setSelection((arrayAdapter.getCount()) - 1);
+        			//EditText et_history = (EditText) findViewById(R.id.messages);
+            		//String history = et_history.getText().toString();
             		
             		
             		
-            		et_history.setText (history + username + ": " + newMessage + "\n");
+            		//et_history.setText (history + username + ": " + newMessage + "\n");
         			
         		}
         	}
