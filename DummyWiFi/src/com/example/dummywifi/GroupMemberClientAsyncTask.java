@@ -3,6 +3,8 @@ package com.example.dummywifi;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.dummywifi.Messenger.ChatSession;
 import com.example.dummywifi.util.Connection;
@@ -19,10 +21,16 @@ public class GroupMemberClientAsyncTask implements Runnable {
 	public static int GMCAT_NEW_MESSAGE = 101;
 	
 	private Activity mainActivity, chatActivity;
+	private List<String> messagesToSend;
 	
 	public GroupMemberClientAsyncTask(Activity mainActivity, SocketAddress groupOwnerAddress) {
 		this.groupOwnerAddress = groupOwnerAddress;
 		this.mainActivity = mainActivity;
+		this.messagesToSend = new ArrayList<String>();
+	}
+	
+	public synchronized void queueMessageToSend(String message) { // called from chatactivity when you push send
+		messagesToSend.add(message);
 	}
 	
 	@Override
@@ -44,7 +52,13 @@ public class GroupMemberClientAsyncTask implements Runnable {
 			
 			// for testing messages
 			
-			while (connection.isOpen()) {				
+			while (connection.isOpen()) {
+				if (messagesToSend.size() > 0) {
+					for (String message : messagesToSend) {
+						connection.sendText(message);
+					}
+					messagesToSend.clear();
+				}
 				//connection.sendText("hello");
 				//Thread.sleep(750);
 				

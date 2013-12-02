@@ -34,8 +34,8 @@ public class GroupOwnerServerAsyncTask implements Runnable {
         /*this.context = context;
         this.statusText = (TextView) statusText;*/
     	session = new ChatSession();
-    	session.queueMessage("testmessage1");
-    	session.queueMessage("testMessage2");
+    	session.queueMessage("Welcome to Spot!");
+    	session.queueMessage("Start typing below to send a message.");
     }
 
     @Override
