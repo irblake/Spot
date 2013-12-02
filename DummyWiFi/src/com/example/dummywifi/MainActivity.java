@@ -215,6 +215,11 @@ public class MainActivity extends Activity {
         //We need functionality to close a group when the user turns it off.
         createBtn.setOnClickListener(new OnClickListener(){
         	public void onClick(View v){
+        		if (!isWifiP2pEnabled) {
+                    Toast.makeText(MainActivity.this, R.string.p2p_off_warning,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
           		mManager.createGroup(mChannel,new ActionListener(){
           		
                       @Override
