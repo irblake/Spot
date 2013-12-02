@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.example.dummywifi.ChatActivity;
 import com.example.dummywifi.models.Client;
 
 /**
@@ -30,7 +31,7 @@ public class ChatSession {
 	public List<Client> getConnectedClients() {
 		return connectedClients;
 	}
-	
+		
 	// Call this from the worker when you get the !joingroup message
 	public void clientJoin(Client c) {
 		Log.i("session", "client joined, id = " + c.getId());

@@ -241,7 +241,7 @@ public class MainActivity extends Activity {
         handler = new Handler() {
         	@Override
         	public void handleMessage(Message msg) {
-        		if (msg.what == 100){
+        		if (msg.what == GroupMemberClientAsyncTask.GMCAT_JOIN_MESSAGE){
         			Intent chatIntent = new Intent(getApplicationContext(),ChatActivity.class);
         			startActivity(chatIntent);
         		}

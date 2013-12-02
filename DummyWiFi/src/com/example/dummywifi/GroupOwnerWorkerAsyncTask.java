@@ -11,6 +11,7 @@ import com.example.dummywifi.models.Client;
 import com.example.dummywifi.util.Connection;
 
 import android.os.AsyncTask;
+import android.os.Message;
 import android.util.Log;
 
 /**
@@ -84,6 +85,13 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
             		// it's a message
             		// put it in the message queue
             		Log.d("message", "put '" + readString + "' into the message queue");
+            		Message msg = new Message();
+            		msg.what = GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE;
+            		msg.obj = readString;
+            		
+            		// This line will move to the gmcat. Right now the gmcat is being used for testing sending "hello" over and over
+            		// but that work will be moved to another thread spawned when the send button is pushed 
+            		((ChatActivity)ChatActivity.currentChatActivity).handler.sendMessage(msg);
             	}
             }
             try {

@@ -13,8 +13,10 @@ import android.os.Message;
 public class GroupMemberClientAsyncTask implements Runnable {
 
 	private SocketAddress groupOwnerAddress;
-	public static int GMCAT_MESSAGE = 100;
-	private Activity mainActivity;
+	public static int GMCAT_JOIN_MESSAGE = 100;
+	public static int GMCAT_NEW_MESSAGE = 101;
+	
+	private Activity mainActivity, chatActivity;
 	
 	public GroupMemberClientAsyncTask(Activity mainActivity, SocketAddress groupOwnerAddress) {
 		this.groupOwnerAddress = groupOwnerAddress;
@@ -33,7 +35,7 @@ public class GroupMemberClientAsyncTask implements Runnable {
 				
 			connection.sendText("!joingroup");
 			Message msg = new Message();
-			msg.what = GMCAT_MESSAGE;
+			msg.what = GMCAT_JOIN_MESSAGE;
 			((MainActivity)mainActivity).handler.sendMessage(msg);
 			Thread.sleep(500);
 			//socket.getOutputStream().write("!joingroup".getBytes());

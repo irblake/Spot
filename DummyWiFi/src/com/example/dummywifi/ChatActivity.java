@@ -8,6 +8,8 @@ import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +25,7 @@ import com.example.dummywifi.XUtil;
 import com.example.dummywifi.ConnectionInfo;
 
 public class ChatActivity extends Activity {
+	public Handler handler;
 	
 	String username = "username";
 	
@@ -32,6 +35,7 @@ public class ChatActivity extends Activity {
 	//Declare the Channel
 	Channel mChannel;
 	
+	public static Activity currentChatActivity = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,24 @@ public class ChatActivity extends Activity {
                 return handled;
             }
         });
+        
+        handler = new Handler() {
+        	@Override
+        	public void handleMessage(Message msg) {
+        		if (msg.what == GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE){
+        			String newMessage = (String)msg.obj;
+        			
+        			EditText et_history = (EditText) findViewById(R.id.messages);
+            		String history = et_history.getText().toString();
+            		
+            		
+            		
+            		et_history.setText (history + username + ": " + newMessage + "\n");
+        			
+        		}
+        	}
+        };
+        ChatActivity.currentChatActivity = this;
 	}
 
 	@Override
