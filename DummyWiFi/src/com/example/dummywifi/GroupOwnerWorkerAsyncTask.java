@@ -72,7 +72,9 @@ public class GroupOwnerWorkerAsyncTask implements Runnable {
 			if (result != lastToken) { // there are new messages, send them to the client				
 				//Log.d("gowat", "new messages! requested with token: " + lastToken + " and received a new token: " + result);
 				lastToken = result;
-				connection.sendText(messages.toString());
+				// star messages by this client, so it knows what side to display them on
+				String userNameStarred = messages.toString().replace(client.getUserName(), "*" + client.getUserName());
+				connection.sendText(userNameStarred);
 				messages = new StringBuffer();
 			} else {
 				//Log.d("gowat", "no new messages. token: " + lastToken);

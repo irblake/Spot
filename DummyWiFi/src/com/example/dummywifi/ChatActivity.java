@@ -27,6 +27,8 @@ import android.widget.TextView.OnEditorActionListener;
 import android.view.inputmethod.EditorInfo;
 import com.example.dummywifi.XUtil;
 import com.example.dummywifi.ConnectionInfo;
+import com.example.dummywifi.UI.DiscussArrayAdapter;
+import com.example.dummywifi.UI.TextBubble;
 
 public class ChatActivity extends Activity {
 	public Handler handler;
@@ -34,8 +36,8 @@ public class ChatActivity extends Activity {
 	String username = "username";
 	
 	public  ListView listView;
-	private ArrayAdapter<String> arrayAdapter;
-	public static ArrayList<String> listItems=new ArrayList<String>();
+	private ArrayAdapter arrayAdapter;
+	public static ArrayList<TextBubble> listItems=new ArrayList<TextBubble>();
 
 	//Declare the WifiP2pManager
 	public WifiP2pManager mManager;
@@ -58,8 +60,10 @@ public class ChatActivity extends Activity {
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
       
-        arrayAdapter = new ArrayAdapter<String>(this, 
-		        android.R.layout.simple_list_item_1, listItems);
+        arrayAdapter = new DiscussArrayAdapter(this.getApplicationContext(), android.R.layout.simple_list_item_1);
+        ((DiscussArrayAdapter)arrayAdapter).setTextBubbleList(listItems);
+        /*ArrayAdapter<String>(this, 
+		        android.R.layout.simple_list_item_1, listItems);*/
         
         listView = (ListView) findViewById(R.id.list);
 		listView.setAdapter(arrayAdapter);
@@ -97,8 +101,13 @@ public class ChatActivity extends Activity {
         		if (msg.what == GroupMemberClientAsyncTask.GMCAT_NEW_MESSAGE){
         			
         			String newMessage = (String)msg.obj;
+        			boolean left = !newMessage.startsWith("*");
+        			if (!left) {
+        				newMessage = newMessage.substring(1);
+        			}
+        			TextBubble bubble = new TextBubble(left, newMessage);
         			
-        			listItems.add(newMessage);
+        			listItems.add(bubble);
                 	arrayAdapter.notifyDataSetChanged();
                 	listView.setSelection((arrayAdapter.getCount()) - 1);
         			//EditText et_history = (EditText) findViewById(R.id.messages);
