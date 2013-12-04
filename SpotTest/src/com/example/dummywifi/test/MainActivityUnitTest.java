@@ -1,6 +1,6 @@
 package com.example.dummywifi.test;
 
-
+ 
 import android.content.Intent;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
@@ -34,6 +34,24 @@ public class MainActivityUnitTest extends
 		Button view = (Button) activity.findViewById(buttonID);
 		assertEquals("The button has an incorrect label","Discover",view.getText());
 	}
-
+	
+	public void testP2PButton() {
+		buttonID = com.example.dummywifi.R.id.atn_direct_enable;
+		assertNotNull(activity.findViewById(buttonID));
+		Button view = (Button) activity.findViewById(buttonID);
+		assertEquals("The button has an incorrect label","P2P On/Off",view.getText());
+	}
+	
+	public void testCreateButton() {
+		buttonID = com.example.dummywifi.R.id.button1;
+		assertNotNull(activity.findViewById(buttonID));
+		Button view = (Button) activity.findViewById(buttonID);
+		assertEquals("The button has an incorrect label","Create",view.getText());
+	}
+	
+	public void testEditableText() {
+		buttonID = com.example.dummywifi.R.id.editText1;
+		assertNotNull(activity.findViewById(buttonID));
+	}
 
 }
