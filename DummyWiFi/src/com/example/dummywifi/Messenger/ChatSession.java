@@ -29,7 +29,7 @@ public class ChatSession {
 	
 	public synchronized void queueMessage(String message) { // this is safe to call from any thread		
 		messageQueue.add(message);
-		Log.d("session", "Added:" + message + " to the message queue");
+
 	}
 	
 	public int fetchMessages(int lastToken, StringBuffer queueBuffer) {
@@ -41,8 +41,8 @@ public class ChatSession {
 				String message = messageQueue.get(i) + messageDelim;
 				byteCount += message.getBytes().length;
 				
-				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken + 1)) { // you can't send more messages due to the byte limit
-					return i - 1;
+				if (byteCount > Connection.MAX_READ_SIZE && i > (lastToken)) { // you can't send more messages due to the byte limit
+					return i;
 				}
 				queueBuffer.append(message);
 			}
