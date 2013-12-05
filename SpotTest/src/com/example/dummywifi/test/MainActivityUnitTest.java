@@ -1,22 +1,30 @@
 package com.example.dummywifi.test;
 
  
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.dummywifi.MainActivity;
 
 
 public class MainActivityUnitTest extends
 	android.test.ActivityUnitTestCase<MainActivity>{
 
+	private int targetColor;
+	public WifiP2pManager cManager = MainActivity.mManager;
+	public Channel cChannel = MainActivity.mChannel;
+	private int yellowBTNcolor;
 	private int buttonID;
 	private MainActivity activity;
 	
@@ -63,13 +71,39 @@ public class MainActivityUnitTest extends
 	}
 	/*
 	public void testRelativeLayoutofMainActivity(){
-		int targetColor = com.example.dummywifi.R.color.YotsubaB;
+		targetColor = com.example.dummywifi.R. color.YotsubaB;
+		assertNotNull(activity.findViewById(targetColor));
 	}
 	*/
 
 	public void testListView() {
 		buttonID = com.example.dummywifi.R.id.listView1;
-		assertNotNull(activity.findViewById(buttonID));
+		assert(activity.findViewById(buttonID) == null);
 	}
 	
+	public void testColors() {
+		targetColor = com.example.dummywifi.R. color.YotsubaB;
+		assertEquals("targetcolor should be 0x00D4D8EF",targetColor, 2130968576);
+		assertFalse("targetcolor should not be 0x00FFFFFF",targetColor == 0x00FFFFFF);
+	}
+	
+	public void testConnectionStart() {
+		cManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+		cChannel = cManager.initialize(this,getMainLooper(), null);
+		
+		cManager.discoverPeers(cChannel, new WifiP2pManager.ActionListener() {
+
+			@Override
+			public void onFailure(int arg0) {
+				assertFalse("This failed to begin discover","This"=="This");
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				assertFalse("This is a success call","This"=="That");
+				
+			}
+		});
+	}
 }
