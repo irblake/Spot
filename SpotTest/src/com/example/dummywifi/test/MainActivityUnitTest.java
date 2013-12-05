@@ -67,4 +67,9 @@ public class MainActivityUnitTest extends
 	}
 	*/
 
+	public void testListView() {
+		buttonID = com.example.dummywifi.R.id.listView1;
+		assertNotNull(activity.findViewById(buttonID));
+	}
+	
 }
