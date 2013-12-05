@@ -1,9 +1,12 @@
 package com.example.dummywifi.test;
 
  
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Looper;
+import android.test.mock.MockContext;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -21,13 +24,13 @@ import com.example.dummywifi.MainActivity;
 public class MainActivityUnitTest extends
 	android.test.ActivityUnitTestCase<MainActivity>{
 
+	private MainActivity mainActivity = new MainActivity();
 	private int targetColor;
-	public WifiP2pManager cManager = MainActivity.mManager;
-	public Channel cChannel = MainActivity.mChannel;
+	public WifiP2pManager cManager = mainActivity.getManager();
+	public Channel cChannel = mainActivity.getChannel();
 	private int yellowBTNcolor;
 	private int buttonID;
 	private MainActivity activity;
-	
 	public MainActivityUnitTest() {
 		super(MainActivity.class);
 		// TODO Auto-generated constructor stub
@@ -86,10 +89,11 @@ public class MainActivityUnitTest extends
 		assertEquals("targetcolor should be 0x00D4D8EF",targetColor, 2130968576);
 		assertFalse("targetcolor should not be 0x00FFFFFF",targetColor == 0x00FFFFFF);
 	}
-	
+	/*
+	 * We attempted a more elaborate test case but that required mocking WifiP2p objects
+	 * Mocking those objects prooved difficult without changing code in the original program
 	public void testConnectionStart() {
-		cManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-		cChannel = cManager.initialize(this,getMainLooper(), null);
+		Log.i("buttcode","start tcs");
 		
 		cManager.discoverPeers(cChannel, new WifiP2pManager.ActionListener() {
 
@@ -106,4 +110,5 @@ public class MainActivityUnitTest extends
 			}
 		});
 	}
+	*/
 }

@@ -62,10 +62,10 @@ public class MainActivity extends Activity {
 	private boolean isWifiP2pEnabled = false;
 	
 	//Declare the WifiP2pManager
-	public static WifiP2pManager mManager;
+	private WifiP2pManager mManager;
 	
 	//Declare the Channel
-	public static Channel mChannel;
+	private Channel mChannel;
 
 	//We need to make a MyBroadCastReceiver to... receive broadcasts!?
 	BroadcastReceiver mReceiver;
@@ -122,6 +122,7 @@ public class MainActivity extends Activity {
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         //This makes the WifiP2pManager.CHannel object
         mChannel = mManager.initialize(this,getMainLooper(), null);
+
         //Stops the keypad from automatically coming up on app start. 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         
@@ -307,4 +308,11 @@ public class MainActivity extends Activity {
         });
     }
     
+    public WifiP2pManager getManager(){
+    	return mManager;
+    }
+    
+    public Channel getChannel(){
+    	return mChannel;
+    }
 }
