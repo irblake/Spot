@@ -54,4 +54,9 @@ public class MainActivityUnitTest extends
 		assertNotNull(activity.findViewById(buttonID));
 	}
 
+	public void testListView() {
+		buttonID = com.example.dummywifi.R.id.listView1;
+		assertNotNull(activity.findViewById(buttonID));
+	}
+	
 }
