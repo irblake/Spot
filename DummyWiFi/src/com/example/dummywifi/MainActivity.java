@@ -62,10 +62,10 @@ public class MainActivity extends Activity {
 	private boolean isWifiP2pEnabled = false;
 	
 	//Declare the WifiP2pManager
-	public WifiP2pManager mManager;
+	public static WifiP2pManager mManager;
 	
 	//Declare the Channel
-	Channel mChannel;
+	public static Channel mChannel;
 
 	//We need to make a MyBroadCastReceiver to... receive broadcasts!?
 	BroadcastReceiver mReceiver;
