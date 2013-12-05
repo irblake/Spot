@@ -2,15 +2,16 @@ package com.example.dummywifi.test;
 
  
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.test.TouchUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.example.dummywifi.MainActivity;
 
 
@@ -18,6 +19,7 @@ public class MainActivityUnitTest extends
 	android.test.ActivityUnitTestCase<MainActivity>{
 
 	private int targetColor;
+	private int yellowBTNcolor;
 	private int buttonID;
 	private MainActivity activity;
 	
@@ -74,4 +76,9 @@ public class MainActivityUnitTest extends
 		assert(activity.findViewById(buttonID) == null);
 	}
 	
+	public void testColors() {
+		targetColor = com.example.dummywifi.R. color.YotsubaB;
+		assertEquals("targetcolor should be 0x00D4D8EF",targetColor, 2130968576);
+		assertFalse("targetcolor should not be 0x00FFFFFF",targetColor == 0x00FFFFFF);
+	}
 }
