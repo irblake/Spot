@@ -17,6 +17,7 @@ import com.example.dummywifi.MainActivity;
 public class MainActivityUnitTest extends
 	android.test.ActivityUnitTestCase<MainActivity>{
 
+	private int targetColor;
 	private int buttonID;
 	private MainActivity activity;
 	
@@ -63,13 +64,14 @@ public class MainActivityUnitTest extends
 	}
 	/*
 	public void testRelativeLayoutofMainActivity(){
-		int targetColor = com.example.dummywifi.R.color.YotsubaB;
+		targetColor = com.example.dummywifi.R. color.YotsubaB;
+		assertNotNull(activity.findViewById(targetColor));
 	}
 	*/
 
 	public void testListView() {
 		buttonID = com.example.dummywifi.R.id.listView1;
-		assertNotNull(activity.findViewById(buttonID));
+		assert(activity.findViewById(buttonID) == null);
 	}
 	
 }

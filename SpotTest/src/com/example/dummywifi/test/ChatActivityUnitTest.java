@@ -14,8 +14,8 @@ public class ChatActivityUnitTest extends
 	private int buttonID;
 	private ChatActivity activity;
 	
-	public MainActivityUnitTest() {
-		super(MainActivity.class);
+	public ChatActivityUnitTest() {
+		super(ChatActivity.class);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -23,12 +23,11 @@ public class ChatActivityUnitTest extends
 	protected void setUp() throws Exception {
 	    super.setUp();
 	    Intent intent = new Intent(getInstrumentation().getTargetContext(),
-	        MainActivity.class);
+	        ChatActivity.class);
 	    startActivity(intent, null, null);
 	    activity = getActivity();
 	  }
 	
-	}
 	
 	public void testEditableText() {
 		buttonID = com.example.dummywifi.R.id.send;
